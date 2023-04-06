@@ -1,0 +1,30 @@
+Budget is approved
+import ast
+
+def check_variable_usage(filename, variable_name):
+    # Parse the code in the file
+    with open(filename, 'r') as file:
+        code = file.read()
+    tree = ast.parse(code)
+
+    # Traverse the abstract syntax tree (AST) to find instances of the variable
+    class FindVariable(ast.NodeVisitor):
+        def __init__(self, variable_name):
+            self.variable_name = variable_name
+            self.variable_count = 0
+
+        def visit_Name(self, node):
+            if node.id == self.variable_name:
+                self.variable_count += 1
+
+    variable_finder = FindVariable(variable_name)
+    variable_finder.visit(tree)
+
+    # Print the result
+    if variable_finder.variable_count > 1:
+        print(f"The variable '{variable_name}' is used {variable_finder.variable_count} times in {filename}.")
+    else:
+        print(f"The variable '{variable_name}' is used only once (or not at all) in {filename}.")
+
+# Example usage
+check_variable_usage('example.py', 'x')
