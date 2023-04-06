@@ -1,4 +1,3 @@
-Budget is approved
 import ast
 
 def check_variable_usage(filename, variable_name):
